@@ -14,6 +14,22 @@ function App() {
     setInputs([input]);
   }
 
+  async function searchKeyword(keyword) {
+    const response = await axios.get("https://serpapi.com/search", {
+      params: {
+        q: keyword,
+        api_key: "a",
+        engine: "google",
+      },
+    });
+
+    return response.data.organic_results.slice(0, 3).map((r) => ({
+      title: r.title,
+      url: r.link,
+      snippet: r.snippet,
+    }));
+  }
+
   function getKeywords(text) {
     const corpus = new Corpus(["text"], [text]);
     const topKeywords = corpus.getTopTermsForDocument("text").slice(0, 10);
